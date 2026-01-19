@@ -9,22 +9,24 @@ const Header = () => {
   )
 }
 
-const Statistics = (props) => {
+const Statistics = ({ good, neutral, bad, total, average, posPercent}) => {
+  
   return (
     <div>
       <h2>Statistics:</h2>
-      <p>Good: {props.good}</p>
-      <p>Neutral: {props.neutral}</p>
-      <p>Bad: {props.bad}</p>
+      <p>Good: {good}</p>
+      <p>Neutral: {neutral}</p>
+      <p>Bad: {bad}</p>
+      <p>Total: {total}</p>
+      <p>Average: {average}</p>
+      <p>Positive: {posPercent}</p>
     </div>
   )
 }
 
-const Button = (props) => {
+const Button = ({ onClick, text}) => {
   return(
-    <button onClick={props.onClick}>
-      {props.text}
-    </button>
+    <button onClick={onClick}>{text}</button>
   )
 }
 
@@ -33,10 +35,20 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  
-  const goodClick = () => { setGood(good + 1) }
-  const badClick = () => { setBad(bad + 1) }
-  const neutralClick = () => { setNeutral(neutral + 1)}
+
+  const total = good + neutral + bad
+  const scores = {
+    good: 1, neutral: 0, bad: -1
+  }
+
+  const score = good * scores.good + neutral * scores.neutral + bad * scores.bad
+  const average = total === 0 ? 0 : score / total
+  const posPercent = total === 0 ? 0 : good / total * 100
+
+  const goodClick = () => { setGood(prevGood => prevGood + 1) }
+  const badClick = () => { setBad(prevBad => prevBad + 1) }
+  const neutralClick = () => { setNeutral(prevNeutral => prevNeutral + 1)}
+  const resetClick = () => {setGood(0), setBad(0), setNeutral(0)}
 
   return (
     <div>
@@ -44,7 +56,8 @@ const App = () => {
       <Button onClick={goodClick} text='Good' />
       <Button onClick={neutralClick} text='Neutral' />
       <Button onClick={badClick} text='Bad' />
-      <Statistics good={good} neutral={neutral} bad={bad} />
+      <Button onClick={resetClick} text='Reset' />
+      <Statistics good={good} neutral={neutral} bad={bad} total={total} average={average} posPercent={posPercent}/>
 
     </div>
   )
