@@ -40,17 +40,28 @@ const App = () => {
     copy[selected] += 1
     setVotesArr(copy)
     }
-    
+
+  // get the most amout of votes
+  const mostVotes = Math.max(...votesArr)
+  // find the corresponding index of the amount
+  const pickMostVotes = votesArr.indexOf(mostVotes)
+
+  console.log(pickMostVotes)
   console.log(votesArr)
   
   return (
     
     <div>
+      <div>
       <p>{anecdotes[selected]}</p>
       <Button onClick={nextClick} text='Next anecdote' />
       <VoteScore votes={votes} />
       <Button onClick={voteClick} text='Vote +1' />
-
+      </div>
+      <div>
+        <h1>Anecdote with most votes</h1>
+        <p>{anecdotes[pickMostVotes]}</p>
+      </div>
     </div>
   )
 }
