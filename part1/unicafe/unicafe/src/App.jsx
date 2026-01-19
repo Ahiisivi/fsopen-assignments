@@ -11,24 +11,39 @@ const Header = () => {
 
 const StatisticsLine = ({text, value}) => {
   return (
-    <p>{text}: {value}</p>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   )
 }
 
 const Statistics = ({ good, neutral, bad, total, average, posPercent}) => {
+
+ 
   if (total === 0) {
     return (
-      <h4>No feedback given</h4>
+      <div>
+        <h2>Statistics</h2>
+        <h4>No feedback given</h4>
+      </div>
+      
     )
   } else
 
     return (
       <div>
-        <StatisticsLine text="Good" value={good} />
-        <StatisticsLine text="Neutral" value={neutral} />
-        <StatisticsLine text="Bad" value={bad} />
-        <StatisticsLine text="Average" value={average} />
-        <StatisticsLine text="Positive" value={posPercent} />
+        <h2>Statistics</h2>
+        <table>
+            <tbody>
+              <StatisticsLine text="Good" value={good} />
+              <StatisticsLine text="Neutral" value={neutral} />
+              <StatisticsLine text="Bad" value={bad} />
+              <StatisticsLine text="Total" value={total} />
+              <StatisticsLine text="Average" value={average.toFixed(1)} />
+              <StatisticsLine text="Positive" value={`${posPercent.toFixed(1)} %`} />
+          </tbody>
+        </table>
       </div>
     )
 }
