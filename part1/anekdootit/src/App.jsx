@@ -6,16 +6,16 @@ const Button = ({onClick, text}) => {
   )
 }
 
+const VoteScore = ({votes}) => {
+  return(
+    <p>This anecdote has {votes} votes.</p>
+  )
+}
+
 const App = () => {
 
   const [selected, setSelected] = useState(0)
 
-  const nextClick = () => {setSelected(Math.floor(Math.random()*anecdotes.length))}
-  
-  //const votes = Array(anecdotes.length).fill(0)
-  //console.log(votes)
-
-  
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -26,13 +26,31 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.',
     'The only way to go fast, is to go well.'
   ]
+  // setting votesArr state
+  const [votesArr, setVotesArr] = useState(Array(anecdotes.length).fill(0))
   
-
+  // connecting votes array with selected anecdote
+  const votes = votesArr[selected]
+  
+  const nextClick = () => {setSelected(Math.floor(Math.random()*anecdotes.length))}
+  
+  //voteClick copies votesArr and updates the array with the new vote
+  const voteClick = () => {
+    const copy = [...votesArr]
+    copy[selected] += 1
+    setVotesArr(copy)
+    }
+    
+  console.log(votesArr)
+  
   return (
     
     <div>
       <p>{anecdotes[selected]}</p>
       <Button onClick={nextClick} text='Next anecdote' />
+      <VoteScore votes={votes} />
+      <Button onClick={voteClick} text='Vote +1' />
+
     </div>
   )
 }
