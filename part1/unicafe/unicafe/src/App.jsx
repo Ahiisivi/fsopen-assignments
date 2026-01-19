@@ -10,18 +10,23 @@ const Header = () => {
 }
 
 const Statistics = ({ good, neutral, bad, total, average, posPercent}) => {
-  
-  return (
-    <div>
-      <h2>Statistics:</h2>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
-      <p>Total: {total}</p>
-      <p>Average: {average}</p>
-      <p>Positive: {posPercent}</p>
-    </div>
-  )
+  if (total === 0) {
+    return (
+      <h4>No feedback given</h4>
+    )
+  } else
+
+    return (
+      <div>
+        <h2>Statistics:</h2>
+        <p>Good: {good}</p>
+        <p>Neutral: {neutral}</p>
+        <p>Bad: {bad}</p>
+        <p>Total: {total}</p>
+        <p>Average: {average}</p>
+        <p>Positive: {posPercent}%</p>
+      </div>
+    )
 }
 
 const Button = ({ onClick, text}) => {
