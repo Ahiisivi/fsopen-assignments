@@ -35,17 +35,25 @@ const Total = (props) => {
 }
 
 const Course = ( {course} ) => {
-  const total = course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises
-
+  
+  const totalWithReduce = course.parts.reduce((partsSum, partValue) => {
+    return partsSum + partValue.exercises
+    }, 0)
+  
+    console.log(totalWithReduce)
 
   return (
     <div>
       <Header course={course.name} />
       <Content parts={course.parts} />
-      <Total total={total} />
+      <Total total={totalWithReduce} />
+      
     </div>
+    
   )
 }
+
+
 
 const App = () => {
   const course = {
