@@ -3,8 +3,7 @@ const Header = (props) => {
 console.log(props)
   return (
     <div>
-      <h1>{props.course}</h1>
-      <br />
+      <h2>{props.course}</h2>
     </div>
   )
 }
@@ -17,13 +16,14 @@ const Part = (props) => {
   )
 }
 
-const Content = (props) => {
+const Content = ( {parts} ) => {
   return (
+    // changed content from hardcoded to dynamic with map()
+    // note to self: use key insted of id={part.id}
     <div>
-      <Part parts={props.parts[0].name} exercises={props.parts[0].exercises} />
-      <Part parts={props.parts[1].name} exercises={props.parts[1].exercises}/>
-      <Part parts={props.parts[2].name} exercises={props.parts[2].exercises}/>
-      <br />
+      {parts.map(part => 
+        <Part key={part.id} parts={part.name} exercises={part.exercises} />
+      )}
     </div>
   )
 }
@@ -46,7 +46,8 @@ const Course = ( {course} ) => {
     <div>
       <Header course={course.name} />
       <Content parts={course.parts} />
-      <Total total={totalWithReduce} />
+      <h3><Total total={totalWithReduce} /></h3>
+      <br />
       
     </div>
     
@@ -56,7 +57,8 @@ const Course = ( {course} ) => {
 
 
 const App = () => {
-  const course = {
+  const courses = [
+    {
     name:  'Half Stack application development',
     id: 1,
     parts: [
@@ -79,11 +81,32 @@ const App = () => {
         id: 3
       }
     ]
-   }
+   },
+   {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    }
+  ]
 
+// app now loops through courses using map
   return (
     <div>
-      <Course course={course} />
+      <div><h1>Web Development curriculum</h1></div>
+      <div>
+      {courses.map( course => <Course key={course.id} course={course} />
+      )} </div>
     </div>
   )
 }
