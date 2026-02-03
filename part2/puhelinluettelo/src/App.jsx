@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Name from './components/Names'
+import axios from 'axios'
 
 const Filter = ({value, onChange}) => {
   return (
@@ -29,11 +30,23 @@ const Persons = ({ persons }) => {
     <ul>{persons.map(person => <Name key={person.name} name={person.name} number={person.number} />)}</ul>
   )
 }
-const App = (props) => {
-  const [persons, setPersons] = useState(props.persons)
+const App = () => {
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+
+  // exercise 2.11 using effect hook and axios library to fetch the data from json server
+  useEffect(() => {
+    console.log('fetcing data')
+  
+  axios
+    .get('http://localhost:3001/persons')
+    .then(response => {
+      console.log('data fetched')
+      setPersons(response.data)
+    })
+  }, [])
 
   const addName = (event) => {
     event.preventDefault()
