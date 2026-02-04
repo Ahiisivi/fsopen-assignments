@@ -25,9 +25,15 @@ const PersonForm = ({ onNameChange, onNumberChange, onSubmit, name, number }) =>
   )
 }
 
-const Persons = ({ persons }) => {
+const Persons = ({ persons, deleteName }) => {
   return (
-    <ul>{persons.map(person => <Name key={person.name} name={person.name} number={person.number} />)}</ul>
+    <ul>{persons.map(person => 
+      <Name 
+        key={person.name} 
+        name={person.name} 
+        number={person.number} 
+        deleteName= {() => deleteName(person.id, person.name)}
+        />)}</ul>
   )
 }
 const App = () => {
@@ -66,6 +72,21 @@ const App = () => {
     })
   }
 
+  const deleteName = (id, name) => {
+    if (window.confirm(`Are you sure you want to delete ${name}`)) {
+    pbServices
+      .deleteObject(id)
+      .then(() => {
+        setPersons(persons.filter(person => person.id !== id))
+      })
+      .catch(error => {
+        console.log(error)
+        alert(`The person ${name} has already been deleted`)
+        setPersons(persons.filter(person => person.id !== id))
+      })
+    }
+  }
+
   const handleNewName = (event) => {
     setNewName(event.target.value)
   }
@@ -93,7 +114,7 @@ const App = () => {
       </div>
       
       <h2>Names and Numbers</h2>
-        <Persons persons={filteredPerson}/>
+        <Persons persons={filteredPerson} deleteName={deleteName}/>
     </div>
   )
 
