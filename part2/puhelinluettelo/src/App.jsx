@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Name from './components/Names'
-import axios from 'axios'
+import pbServices from './services/persons.js'
 
 const Filter = ({value, onChange}) => {
   return (
@@ -36,16 +36,13 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
 
-  // exercise 2.11 using effect hook and axios library to fetch the data from json server
-  useEffect(() => {
-    console.log('fetcing data')
   
-  axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      console.log('data fetched')
-      setPersons(response.data)
-    })
+  useEffect(() => {
+    pbServices
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+      })
   }, [])
 
   const addName = (event) => {
@@ -59,18 +56,14 @@ const App = () => {
       name: newName,
       number: newNumber,
     }
-
-    //setPersons(persons.concat(nameObject))
-    // 2.12 sending and saving data to server
-    axios
-      .post('http://localhost:3001/persons', nameObject)
-      .then(response => {
-        setPersons(persons.concat(response.data))
-              setNewName('')
-              setNewNumber('')
-      })
-
     
+    pbServices
+    .create(nameObject)
+    .then(returnedPersons => {
+      setPersons(persons.concat(returnedPersons))
+      setNewName('')
+      setNewNumber('')
+    })
   }
 
   const handleNewName = (event) => {
