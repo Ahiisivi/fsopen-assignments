@@ -53,10 +53,30 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    if (persons.some(person => person.name.toLowerCase() === newName.toLowerCase())) {
-      alert(`${newName} already added to phonebook`)
-      return
+
+    const personExists = persons.find(person => person.name.toLowerCase() === newName.toLocaleLowerCase())
+    
+    if (personExists) {
+      if (window.confirm(`${personExists.name} already exists. Do you want to update contact info?`)) {
+        
+        const changedPerson = {...personExists, number: newNumber}
+
+        pbServices
+        .update(personExists.id, changedPerson)
+        .then(updatedPerson => {
+          setPersons(persons.map(person => person.id === personExists.id ? updatedPerson : person))
+          setNewName('')
+          setNewNumber('')
+        })
+        .catch(error => {
+          console.log(error)
+          alert("Error while updating")
+          setPersons(persons.filter(person => person.id !== personExists.id))
+        })
     }
+
+    return 
+  }
 
     const nameObject = {
       name: newName,
