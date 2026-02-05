@@ -1,0 +1,44 @@
+* {
+    font-family: sans-serif;
+}
+
+h1 {
+    color: white;
+    background-color: rgb(47, 93, 219);
+    padding: 10px;
+    border-radius: 5px;
+    font-family: sans-serif
+
+}
+
+h2 {
+    font-family: sans-serif;
+}
+
+.name {
+  color: rgb(0, 0, 0);
+  padding-top: 3px;
+  font-size: 15px;
+  font-family: sans-serif;
+}
+
+.name button {
+    color: rgb(255, 255, 255);
+    background-color: rgb(47, 93, 219);
+    font-family: sans-serif;
+    font-weight: bold;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+
+.success {
+  color: green;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-family: sans-serif;
+}
