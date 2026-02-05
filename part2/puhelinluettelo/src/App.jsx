@@ -51,7 +51,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
-  const [successMessage, setSuccessMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
   
   useEffect(() => {
     pbServices
@@ -77,15 +77,15 @@ const App = () => {
           setPersons(persons.map(person => person.id === personExists.id ? updatedPerson : person))
           setNewName('')
           setNewNumber('')
-          setSuccessMessage(`Person '${changedPerson.name}' was updated.`)
+          setNotification({message: `Person '${changedPerson.name}' was updated.`, type: 'success'})
           setTimeout(() => {
-            setSuccessMessage(null)
+            setNotification(null)
           }, 5000)
         })
         
         .catch(error => {
           console.log(error)
-          setSuccessMessage('Error while updating info')
+          setNotification({message: 'Error while updating info', type: 'error'})
           setPersons(persons.filter(person => person.id !== personExists.id))
         })
     }
@@ -104,9 +104,9 @@ const App = () => {
       setPersons(persons.concat(returnedPersons))
       setNewName('')
       setNewNumber('')
-      setSuccessMessage(`Person '${nameObject.name}' was added.`)
+      setNotification({message: `Person '${nameObject.name}' was added.`, type: 'success'})
       setTimeout(() => {
-        setSuccessMessage(null)
+        setNotification(null)
       }, 5000)
     })
   }
@@ -117,9 +117,9 @@ const App = () => {
       .deleteObject(id)
       .then(() => {
         setPersons(persons.filter(person => person.id !== id))
-        setSuccessMessage(`Person '${name}' was deleted`)
+        setNotification({message: `Person '${name}' was deleted`, type: 'error'})
         setTimeout(() => {
-          setSuccessMessage(null)
+          setNotification(null)
         }, 5000)
       })
       .catch(error => {
@@ -148,7 +148,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification message={successMessage} />
+      <Notification notification={notification} />
       <div>
         <Filter value={newFilter} onChange={handleNewFilter} />
       </div>
