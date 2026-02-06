@@ -45,7 +45,13 @@ const App = () => {
   } else if (foundCountries.length > 1) {
     displayCountries = (
     <ul>
-      {foundCountries.map(country => <li key={country.name.common}>{country.name.common}</li>)}
+      {foundCountries.map(country => 
+      <li key={country.name.common}>
+        {country.name.common}
+          <button onClick={() => setSearchValue(country.name.common)}>
+          Show</button>
+        </li>
+      )}
     </ul>
     )
   } else if (foundCountries.length === 1) {
