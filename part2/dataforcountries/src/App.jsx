@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
+import Weather from './components/Weather'
 
 const SearchForm = ({value, onChange}) => {
   return (
@@ -69,6 +70,7 @@ const App = () => {
           )}
         </ul>
         <img src={specifiedCountry.flags.png} alt={specifiedCountry.flags.alt} />
+        <Weather city={specifiedCountry.capital} />
       </div>
     )
   } else {
@@ -83,6 +85,7 @@ const App = () => {
 
       <p>{foundCountries.length > 10  }</p>
       <div>{displayCountries}</div>
+      
     </div>
   )
 }
