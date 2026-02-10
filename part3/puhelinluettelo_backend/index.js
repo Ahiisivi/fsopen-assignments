@@ -9,6 +9,13 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
 
+app.get('/info', (request, response) => {
+    const personsCount = persons.length
+    const timeStamp = new Date()
+    response.send(`<p>The phonebook has info about ${personsCount} persons</p>
+                    <p>The date is: ${timeStamp}</p>`)
+})
+
 let persons = [
     { 
       "id": "1",
