@@ -37,7 +37,7 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 const generateId = () => {
-  String(Math.floor(Math.random() * 1000))
+  return String(Math.floor(Math.random() * 10000))
 }
 
 app.post('/api/persons/', (request, response) => {
@@ -45,8 +45,20 @@ app.post('/api/persons/', (request, response) => {
 
   if (!body.name) {
     return response.status(400).json({
-      error: 'content missing'
+      error: 'Missing name'
     })
+  }
+
+  if (!body.number) {
+    return response.status(400).json({
+      error: 'Missing number'
+    })
+  }
+
+  if (persons.find(p => p.name === body.name)) {
+      return response.status(400).json({ 
+        error: 'Name already exists' 
+      })
   }
 
   const person = {
