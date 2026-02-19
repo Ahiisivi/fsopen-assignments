@@ -17,44 +17,21 @@ app.use(cors())
 
 app.use(express.static('dist'))
 
-let persons = [
-    { 
-      "id": "1",
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": "2",
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": "3",
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": "4",
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-]
-
 app.get('/api/persons/', (request, response) => {
     Person.find({}).then(persons => {
       response.json(persons)
     })
 })
 
-app.get('/info', (request, response) => {
+/* app.get('/info', (request, response) => {
     const personsCount = persons.length
     const timeStamp = new Date()
     response.send(`<p>The phonebook has info about ${personsCount} persons</p>
                     <p>The date is: ${timeStamp}</p>`)
-})
+}) */
 
 app.get('/api/persons/:id', (request, response, next) => {
-  Person.findByID(request.params.id)
+  Person.findById(request.params.id)
     .then(person => {
       if (person) {
         response.json(person)
@@ -65,18 +42,13 @@ app.get('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
     .then(result => {
       response.status(204).end()
     })
     .catch(error => next(error))
 })
-
-// old ID generation before mongoDB
-/* const generateId = () => {
-  return String(Math.floor(Math.random() * 10000))
-} */
 
 app.post('/api/persons/', (request, response) => {
   const body = request.body
@@ -91,12 +63,6 @@ app.post('/api/persons/', (request, response) => {
     return response.status(400).json({
       error: 'Missing number'
     })
-  }
-
-  if (persons.find(p => p.name === body.name)) {
-      return response.status(400).json({ 
-        error: 'Name already exists' 
-      })
   }
 
   const person = new Person({
