@@ -84,8 +84,8 @@ const App = () => {
         })
         
         .catch(error => {
-          console.log(error)
-          setNotification({message: 'Error while updating info', type: 'error'})
+          console.log(error.response.data.error)
+          setNotification({message: error.response.data.error, type: 'error'})
           setPersons(persons.filter(person => person.id !== personExists.id))
         })
     }
@@ -105,6 +105,13 @@ const App = () => {
       setNewName('')
       setNewNumber('')
       setNotification({message: `Person '${nameObject.name}' was added.`, type: 'success'})
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    })
+    .catch(error => {
+      console.log(error.response.data.error)
+      setNotification({message: error.response.data.error, type: "error"})
       setTimeout(() => {
         setNotification(null)
       }, 5000)
