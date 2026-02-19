@@ -5,6 +5,7 @@ const app = express()
 const cors = require('cors')
 const Person = require('./models/person')
 
+
 morgan.token('body', (req) => {
   return JSON.stringify(req.body)
 })
@@ -23,12 +24,17 @@ app.get('/api/persons/', (request, response) => {
     })
 })
 
-/* app.get('/info', (request, response) => {
-    const personsCount = persons.length
-    const timeStamp = new Date()
-    response.send(`<p>The phonebook has info about ${personsCount} persons</p>
-                    <p>The date is: ${timeStamp}</p>`)
-}) */
+app.get('/info', (request, response, next) => {
+    Person.countDocuments({})
+      .then(count => {
+        const timeNow = new Date()
+        response.send(
+          `<p>The Phonebook has info aboout ${count} persons</p>
+          <p>${timeNow}</p>`
+        )
+      })
+      .catch(error => next(error))
+})
 
 app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
@@ -73,6 +79,25 @@ app.post('/api/persons/', (request, response) => {
   person.save().then(savedPerson => {
     response.json(savedPerson)
   })
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+  const body = request.body
+
+  const person = {
+    name: body.name,
+    number: body.number,
+  }
+  
+  Person.findByIdAndUpdate(request.params.id, person, {returnDocument: 'after'})
+    .then(updatedPerson => {
+      if(updatedPerson) {
+        response.json(updatedPerson)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
 const errorHandler = (error, request, response, next) => {
