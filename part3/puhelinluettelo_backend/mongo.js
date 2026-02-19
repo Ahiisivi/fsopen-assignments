@@ -1,3 +1,5 @@
+// mongoose script for 3.12. Redundant after that.
+
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
