@@ -71,9 +71,10 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-const generateId = () => {
+// old ID generation before mongoDB
+/* const generateId = () => {
   return String(Math.floor(Math.random() * 10000))
-}
+} */
 
 app.post('/api/persons/', (request, response) => {
   const body = request.body
@@ -96,15 +97,14 @@ app.post('/api/persons/', (request, response) => {
       })
   }
 
-  const person = {
-    id: generateId(),
+  const person = new Person({
     name: body.name,
-    number: body.number
-  }
+    number: body.number,
+  })
 
-  persons = persons.concat(person)
-  console.log(person)
-  response.json(person)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
 
